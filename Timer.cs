@@ -1,20 +1,24 @@
+using UnityEngine;
 using UnityEngine.Events;
 
-public class Timer
+public class Timer : MonoBehaviour
 {
-	public UnityEvent timeOut = new UnityEvent();
 	public float length = 1;
-	public bool loop;
+	public bool loop = false;
+	public bool startOnEnable = false;
+
+	[HideInInspector]
+	public UnityEvent timeOut = new UnityEvent();
+	[HideInInspector]
 	public bool isRunning = false;
+	[HideInInspector]
 	public float currentTime = 0;
 
-	public Timer(float lengthInSeconds, bool shouldLoop) {
-		length = lengthInSeconds;
-		loop = shouldLoop;
+	void Start() {
 		TimerManager.Singleton.Add(this);
 	}
 
-	public void Start() {
+	public void Run() {
 		currentTime = 0;
 		isRunning = true;
 	}
@@ -26,5 +30,12 @@ public class Timer
 
 	public void Pause() {
 		isRunning = !isRunning;
+	}
+
+	void OnEnable() {
+		if (startOnEnable) Run();
+	}
+	void OnDisable() {
+		if (loop) Stop();
 	}
 }

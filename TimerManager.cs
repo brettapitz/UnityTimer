@@ -4,7 +4,7 @@ using UnityEngine;
 public class TimerManager : MonoBehaviour
 {
 	public static TimerManager Singleton {get; private set;}
-	public List<Timer> timers = new List<Timer>();
+	List<Timer> timers = new List<Timer>();
 
 	void Awake() {
 		if (Singleton && Singleton != this) {
@@ -39,5 +39,9 @@ public class TimerManager : MonoBehaviour
 
 	public void Add(Timer timer) {
 		timers.Add(timer);
+	}
+
+	public void Clear() {
+		timers = new List<Timer>();
 	}
 }
