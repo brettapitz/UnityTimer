@@ -5,6 +5,7 @@ public class TimerManager : MonoBehaviour
 {
 	public static TimerManager Singleton {get; private set;}
 	List<Timer> timers = new List<Timer>();
+	Stack<int> free = new Stack<int>();
 
 	void Awake() {
 		if (Singleton && Singleton != this) {
@@ -21,7 +22,7 @@ public class TimerManager : MonoBehaviour
 
 		for (int i = 0; i < len; i++) {
 			Timer timer = timers[i];
-			if (!timer.isRunning) continue;
+			if (timer == null) continue;
 
 			timer.currentTime += delta;
 			if (timer.currentTime < timer.length) continue;
@@ -37,8 +38,20 @@ public class TimerManager : MonoBehaviour
 		}
 	}
 
-	public void Add(Timer timer) {
+	public int Add(Timer timer) {
+		if (free.Count != 0) {
+			int idx = free.Pop();
+			timers[idx] = timer;
+			return idx;
+		}
+
 		timers.Add(timer);
+		return timers.Count - 1;
+	}
+
+	public void Remove(int idx) {
+		timers[idx] = null;
+		free.Push(idx);
 	}
 
 	public void Clear() {

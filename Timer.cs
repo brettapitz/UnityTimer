@@ -1,41 +1,37 @@
-using UnityEngine;
 using UnityEngine.Events;
 
-public class Timer : MonoBehaviour
+public class Timer
 {
 	public float length = 1;
 	public bool loop = false;
-	public bool startOnEnable = false;
-
-	[HideInInspector]
 	public UnityEvent timeOut = new UnityEvent();
-	[HideInInspector]
-	public bool isRunning = false;
-	[HideInInspector]
 	public float currentTime = 0;
+	public bool isRunning;
 
-	void Start() {
-		TimerManager.Singleton.Add(this);
+	bool isManaged = false;
+	int managerIndex;
+
+	public Timer(float l) {
+		length = l;
 	}
 
-	public void Run() {
-		currentTime = 0;
+	public void Start() {
+		if (!isManaged) {
+			managerIndex = TimerManager.Singleton.Add(this);
+			isManaged = true;
+		}
 		isRunning = true;
+		currentTime = 0;
 	}
 
 	public void Stop() {
+		TimerManager.Singleton.Remove(managerIndex);
 		currentTime = 0;
 		isRunning = false;
+		isManaged = false;
 	}
 
-	public void Pause() {
-		isRunning = !isRunning;
-	}
-
-	void OnEnable() {
-		if (startOnEnable) Run();
-	}
-	void OnDisable() {
-		if (loop) Stop();
+	public float Progress() {
+		return currentTime / length;
 	}
 }
