@@ -5,8 +5,9 @@ public class Timer {
 	public bool loop = false;
 	public UnityEvent timeOut = new UnityEvent();
 	public float currentTime = 0;
-	public bool isRunning;
 
+	bool paused = false;
+	bool isRunning = false;
 	int managerIndex;
 
 	public Timer(float l) {
@@ -15,19 +16,45 @@ public class Timer {
 
 	public void Start() {
 		currentTime = 0;
-		if (isRunning) return;
-
-		managerIndex = TimerManager.Singleton.Add(this);
-		isRunning = true;
+		paused = false;
+		AddToManager();
 	}
 
 	public void Stop() {
-		if (!isRunning) return;
-		TimerManager.Singleton.Remove(managerIndex);
-		isRunning = false;
+		currentTime = 0;
+		paused = false;
+		RemoveFromManager();
+	}
+
+	public void Pause() {
+		if (isRunning) {
+			paused = true;
+			RemoveFromManager();
+		}
+	}
+
+	public void Unpause(){
+		if (paused) {
+			paused = false;
+			AddToManager();
+		}
+	}
+
+	public bool IsRunning() {
+		return isRunning;
 	}
 
 	public float Progress() {
 		return currentTime / length;
+	}
+
+	void AddToManager() {
+		managerIndex = TimerManager.Singleton.Add(this);
+		isRunning = true;
+	}
+
+	void RemoveFromManager() {
+		TimerManager.Singleton.Remove(managerIndex);
+		isRunning = false;
 	}
 }

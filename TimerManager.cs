@@ -16,6 +16,7 @@ public class TimerManager : MonoBehaviour {
 
 	void Update() {
 		if (timers.Count == 0 || timers.Count == free.Count) return;
+
 		float delta = Time.deltaTime;
 		int len = timers.Count;
 
@@ -55,5 +56,6 @@ public class TimerManager : MonoBehaviour {
 
 	public void Clear() {
 		timers = new List<Timer>();
+		free = new Stack<int>();
 	}
 }
