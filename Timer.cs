@@ -7,7 +7,7 @@ public class Timer {
 	public float currentTime = 0;
 
 	bool paused = false;
-	bool isRunning = false;
+	bool running = false;
 	int managerIndex;
 
 	public Timer(float l) {
@@ -17,31 +17,39 @@ public class Timer {
 	public void Start() {
 		currentTime = 0;
 		paused = false;
-		AddToManager();
+		if (!running) {
+			AddToManager();
+			running = true;
+		}
 	}
 
 	public void Stop() {
 		currentTime = 0;
 		paused = false;
-		RemoveFromManager();
+		if (running) {
+			RemoveFromManager();
+			running = false;
+		}
 	}
 
 	public void Pause() {
-		if (isRunning) {
-			paused = true;
+		if (running) {
 			RemoveFromManager();
+			paused = true;
+			running = false;
 		}
 	}
 
 	public void Unpause(){
 		if (paused) {
-			paused = false;
 			AddToManager();
+			paused = false;
+			running = true;
 		}
 	}
 
 	public bool IsRunning() {
-		return isRunning;
+		return running;
 	}
 
 	public float Progress() {
@@ -50,11 +58,9 @@ public class Timer {
 
 	void AddToManager() {
 		managerIndex = TimerManager.Singleton.Add(this);
-		isRunning = true;
 	}
 
 	void RemoveFromManager() {
 		TimerManager.Singleton.Remove(managerIndex);
-		isRunning = false;
 	}
 }
