@@ -11,4 +11,11 @@ To keep removal quick, instead of List.Remove, the index is nulled and added to 
 
 Not inheriting from MonoBehaviour means no OnDestroy or OnDisable method, so looping Timers have to be explicitly stopped by their callers or they'll run forever.
 
-The API's simple: __Start()__ runs the timer, or zeros it if it's already running, __Stop()__ stops it.
+The API's simple: 
+  - __Start__ zeros the timer, and runs it if it's not already running
+  - __Stop__ zeros and stops the timer if it's running or paused
+  - __Pause__ stops the timer and marks it paused, but does not zero it
+  - __Unpause__ starts the timer without zeroing it, but only if it's marked paused. Note that __Start__ and __Stop__ both unmark paused.
+    - Having both __Start/Stop__ and __Pause/Unpause__ lets you choose whether or not an object's timer is reset (for example, if it's disabled and later re-enabled).
+  - __Progress__ returns a number between 0 and 1 representing what percentage of the timer has passed (useful for Lerps)
+  - __IsRunning__ returns true if the timer is running, false otherwise
