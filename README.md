@@ -19,3 +19,4 @@ The API's simple:
     - Having both __Start/Stop__ and __Pause/Unpause__ lets you choose whether or not an object's timer is reset (for example, if it's disabled and later re-enabled).
   - __Progress__ returns a number between 0 and 1 representing what percentage of the timer has passed (useful for Lerps)
   - __IsRunning__ returns true if the timer is running, false otherwise
+  - Looping can be enabled by setting the __Loop__ property to true
