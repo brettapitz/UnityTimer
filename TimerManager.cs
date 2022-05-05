@@ -29,7 +29,7 @@ public class TimerManager : MonoBehaviour {
 
 			timer.timeOut.Invoke();
 
-			if (timer.loop) {
+			if (timer.Loop) {
 				timer.currentTime -= timer.length;
 				continue;
 			} 

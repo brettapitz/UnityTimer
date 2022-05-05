@@ -1,10 +1,10 @@
 using UnityEngine.Events;
 
 public class Timer {
-	public float length = 1;
-	public bool loop = false;
-	public UnityEvent timeOut = new UnityEvent();
+	public float length;
 	public float currentTime = 0;
+	public UnityEvent timeOut = new UnityEvent();
+	public bool Loop {get; set;}
 
 	bool paused = false;
 	bool running = false;
