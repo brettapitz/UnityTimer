@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimerManager : MonoBehaviour
-{
+public class TimerManager : MonoBehaviour {
 	public static TimerManager Singleton {get; private set;}
 	List<Timer> timers = new List<Timer>();
 	Stack<int> free = new Stack<int>();
@@ -15,8 +14,8 @@ public class TimerManager : MonoBehaviour
 		}
 	}
 
-	void FixedUpdate()
-	{
+	void Update() {
+		if (timers.Count == 0 || timers.Count == free.Count) return;
 		float delta = Time.deltaTime;
 		int len = timers.Count;
 
